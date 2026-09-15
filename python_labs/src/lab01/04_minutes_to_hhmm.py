@@ -1,3 +1,6 @@
-m = int(input('Минуты: '))
-c = m // 60
-print(c, m - c * 60)
+m = int(input("Минуты: "))
+
+hours = m // 60
+minutes = m % 60
+
+print(f"{hours} : {minutes:02d}")
