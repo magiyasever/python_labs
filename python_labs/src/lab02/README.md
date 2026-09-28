@@ -1,4 +1,5 @@
 Отчет по лабораторной работе №2
+
 Задание 1. 
 Результат выполнения arrays.py min_max
 
@@ -13,5 +14,25 @@
 Результат выполнения arrays.py flatten
 
 <img width="559" height="215" alt="Снимок экрана — 2026-09-23 в 21 27 56" src="https://github.com/user-attachments/assets/d3827a91-22ce-4dee-8374-e342e1298e9c" />
+
+
+Задание 2.
+
+
+Результат выполнения matrix.py col_sums
+
+
+<img width="608" height="256" alt="col_sums" src="https://github.com/user-attachments/assets/8752b1ae-44b3-45bf-b25f-01f0e6b7809b" />
+
+
+Результат выполнения matrix.py transpose
+
+<img width="585" height="282" alt="transpose" src="https://github.com/user-attachments/assets/2109f552-72ad-4c4b-be82-3b745beae0c4" />
+
+
+Результат выполнения matrix.py row_sums
+
+
+<img width="580" height="249" alt="row_sums" src="https://github.com/user-attachments/assets/4383421a-d649-4d46-9355-421b2a422fee" />
 
 
