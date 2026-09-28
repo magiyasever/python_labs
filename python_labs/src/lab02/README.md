@@ -36,3 +36,12 @@
 <img width="580" height="249" alt="row_sums" src="https://github.com/user-attachments/assets/4383421a-d649-4d46-9355-421b2a422fee" />
 
 
+
+Задание 3.
+
+
+
+
+<img width="798" height="222" alt="Снимок экрана — 2026-09-28 в 15 29 05" src="https://github.com/user-attachments/assets/72777b46-f9c4-41a5-a342-6cb1725dcac1" />
+
+
