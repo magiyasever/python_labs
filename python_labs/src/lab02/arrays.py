@@ -35,7 +35,7 @@ def min_max(nums: list[float | int])  -> tuple[float | int, float | int]:
 
     Args:
 
-        a: Список чисел (целых и вещественных)
+        nums: Список чисел (целых и вещественных)
 
     Returns:
 
@@ -59,7 +59,7 @@ def unique_sorted(nums: list[float | int]) -> list[float | int]:
 
     Args:
 
-        a: Список чисел (целых и вещественных)
+        nums: Список чисел (целых и вещественных)
 
     Returns:
 
@@ -78,7 +78,7 @@ def flatten(mat: list[list | tuple]) -> list:
 
     Args:
 
-        a: Список в котором содержатся списки или кортежи
+        mat: Список в котором содержатся списки или кортежи
 
     Returns:
 
