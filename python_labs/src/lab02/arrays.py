@@ -54,7 +54,7 @@ def min_max(nums: list[float | int])  -> tuple[float | int, float | int]:
 
 
 def unique_sorted(nums: list[float | int]) -> list[float | int]:
-    n = list(set(nums))
+
     """Возвращает отсортированный список
 
     Args:
@@ -66,6 +66,7 @@ def unique_sorted(nums: list[float | int]) -> list[float | int]:
         Отсортированный список уникальных элементов
 
     """
+    n = list(set(nums))
     for i in range(len(n)):
         for k in range(len(n) - 1):
             if n[k] > n[k + 1]:
