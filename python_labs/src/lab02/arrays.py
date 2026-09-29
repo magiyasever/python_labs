@@ -48,7 +48,7 @@ def min_max(nums: list[float | int])  -> tuple[float | int, float | int]:
     """
     if len(nums) == 0:
         raise ValueError
-    newl = (mmin(nums), max(nums))
+    newl = (mmin(nums), mmax(nums))
     return newl
 
 
