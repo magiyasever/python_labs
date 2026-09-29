@@ -25,8 +25,8 @@ def mmin(s):
         Наименьшее значение из ``s``."""
     res = s[0]
     for x in s:
-            if x < res:
-                res = x
+        if x < res:
+            res = x
     return res
 
 
