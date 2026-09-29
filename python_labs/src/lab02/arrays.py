@@ -43,11 +43,11 @@ def min_max(nums: list[float | int])  -> tuple[float | int, float | int]:
 
     Raises:
 
-        ValueError: если список пустой
+        ValueError: список пустой
 
     """
     if len(nums) == 0:
-        raise ValueError
+        raise ValueError("Список пуст")
     newl = (mmin(nums), mmax(nums))
     return newl
 
@@ -86,13 +86,13 @@ def flatten(mat: list[list | tuple]) -> list:
 
     Raises:
 
-        TypeError: Если элемент не является списком или кортежем
+        TypeError: элемент не является списком или кортежем
 
     """
     result = []
     for x in mat:
         if not isinstance(x, (tuple, list)):
-            raise TypeError
+            raise TypeError('элемент не является списком или кортежем')
         result.extend(x)
     return result
 
