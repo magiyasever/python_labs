@@ -32,6 +32,8 @@
 
 
 
+
+
 <img width="394" height="127" alt="Снимок экрана — 2026-10-10 в 16 50 01" src="https://github.com/user-attachments/assets/619b1514-c527-4686-8976-b456607d02d0" />
 
 
