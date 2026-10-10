@@ -10,34 +10,8 @@
 
 
 
-def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
-    '''Нормализует текст
-    Args:
-        text: Исходный текст
-        casefold: Bool значение
-                    True: Переводит все буквы в строчные
-                    False: Оставляет всё как есть
-        yo2e: Заменяет ё/Ё на е/Е
+<img width="575" height="527" alt="Снимок экрана — 2026-10-10 в 16 53 28" src="https://github.com/user-attachments/assets/863dcff7-7533-4b86-8065-1236c59c6f88" />
 
-    Returns:
-        обработанный текст
-    '''
-    if casefold:
-        text = text.casefold()
-    else:
-        text = text.lower()
-
-    if yo2e:
-        text = text.replace("ё", "е").replace("Ё", "Е")
-    
-    result = []
-    for char in text:
-        if unicodedata.category(char) == "Cc":
-            result.append(' ')
-        else:
-            result.append(char)
-    new_text = ''.join(result)
-    return ' '.join(new_text.split())
 
 
 
