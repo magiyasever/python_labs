@@ -122,7 +122,16 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()```
-
+    main()
+```
 
 Примеры работы:
+Обычный режим вывода
+
+
+<img width="309" height="101" alt="Снимок экрана — 2026-10-10 в 18 17 15" src="https://github.com/user-attachments/assets/008d5680-0b96-4818-838d-1c8b220f208a" />
+
+
+Табличный режим вывода:
+
+<img width="190" height="125" alt="Снимок экрана — 2026-10-10 в 18 19 47" src="https://github.com/user-attachments/assets/fb940c76-7b30-4764-9b39-2028bc83dc33" />
