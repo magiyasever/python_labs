@@ -21,11 +21,11 @@ def table(top: list[tuple[str, int]]) -> None:
             но не меньше длины заголовка "слово".
     '''
     width = len("слово")
-    for word, count in top_n:
+    for word, count in top:
         width = max(width, len(word))
     print("слово".ljust(width) + " | частота")
     print("-" * (width + 3 + len("частота")))
-    for word, count in top_n:
+    for word, count in top:
         print(word.ljust(width) + " | " + str(count))
 
 
