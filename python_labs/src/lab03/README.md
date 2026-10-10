@@ -61,7 +61,7 @@ top_n возвращает первые N частых слов с алфави�
 
 Исходный код src/lab03/text_stats.py
 
-import sys
+'''python import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -121,6 +121,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main()'''
 
 Примеры работы:
