@@ -12,7 +12,6 @@
 
 def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
     '''Нормализует текст
-
     Args:
         text: Исходный текст
         casefold: Bool значение
