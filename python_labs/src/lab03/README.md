@@ -31,12 +31,23 @@
 <img width="280" height="59" alt="Снимок экрана — 2026-10-10 в 16 55 31" src="https://github.com/user-attachments/assets/f3dcecf4-310a-4aa7-97ba-99f784191f65" />
 
 
-
-
-
 <img width="394" height="127" alt="Снимок экрана — 2026-10-10 в 16 50 01" src="https://github.com/user-attachments/assets/619b1514-c527-4686-8976-b456607d02d0" />
 
 
 Рис. 2. Результат работы и тестов функции tokenize
 
 
+3. Функции count_freq и top_n
+
+count_freq подсчитывает частоту встречаемости токенов. 
+top_n возвращает первые N частых слов с алфавитной сортировкой при равенстве частот.
+
+
+
+<img width="621" height="517" alt="Снимок экрана — 2026-10-10 в 16 59 31" src="https://github.com/user-attachments/assets/771574ce-65ec-4956-8f17-8011adb1036d" />
+
+
+
+<img width="632" height="126" alt="Снимок экрана — 2026-10-10 в 17 00 25" src="https://github.com/user-attachments/assets/729e4053-c545-45a3-bb0c-5246a2f8b077" />
+
+Рис. 3. Результат работы и тестов функций count_freq и top_n
