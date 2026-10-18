@@ -233,9 +233,6 @@ data/lab04/b.txt,привет,2
 
 Сводный отчет
 
-word,count
-привет,3
-мир,1
 
 <img width="244" height="88" alt="Снимок экрана — 2026-10-18 в 18 26 14" src="https://github.com/user-attachments/assets/4dd6c2cf-dc5b-40db-8b56-3993d6b4e947" />
 
