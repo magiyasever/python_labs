@@ -8,7 +8,8 @@
 
 Функция читает файл целиком и возвращает его содержимое в виде одной строки. По умолчанию используется кодировка UTF-8, но при необходимости можно передать другую кодировку, например encoding="cp1251"
 
-````python def read_text(path: str | Path, encoding: str = "utf-8") -> str:
+````python
+def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     '''Считывает текст по указанному пути
 
     Args:
@@ -21,4 +22,4 @@
     p = Path(path)
     return p.read_text(encoding=encoding)
 ````
-dfgjndn
+
