@@ -42,12 +42,11 @@ if args.input_files is None:
 
     path = str(DEFAULT_REPORT) if args.output_files is None else args.output_files[0]
     write_csv(top_n(words_cnt, len(words_cnt)), path, header=("word", "count"))
-
-    print(f"Всего слов: {len(tokens)}")
-    print(f"Уникальных слов: {len(words_cnt)}")
-    print("Топ-5:")
+         
+    print(f"Всего слов: {len(tokens)}\n")
+    print(f"Уникальных слов: {len(words_cnt)}\n")
     for word, count in top_n(words_cnt, 5):
-        print(f"{word}: {count}")
+        print(f"{word}:{count}")
 else:
     # region Для много файлов
     per_file = []  # Здесь лежат данные в формате [file_path, word, count]
