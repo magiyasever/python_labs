@@ -4,23 +4,46 @@
 """
 import random
 import timeit
+from collections.abc import Callable
 from pathlib import Path
 
 from src.lab04.io_txt_csv import write_csv
 from src.lab07.search import binary_search, linear_search, two_sum_brute, two_sum_fast
-from src.lab07.sorting import (bubble_sort, counting_sort, insertion_sort,
-                               merge_sort, selection_sort)
+from src.lab07.sorting import (bubble_sort, counting_sort, insertion_sort,merge_sort, selection_sort)
 
 QUADRATIC_LIMIT = 10_000  # квадратичные сортировки на n больше этого не запускаем
 
+Row = tuple[str, int, str, float | str]  # (task, n, impl, seconds); seconds может быть "> 60"
 
-def measure(fn, number=1, repeat=3) -> float:
-    """Время ОДНОГО запуска fn: number запусков подряд, repeat таких замеров,
-    берём лучший замер и делим на number."""
+def measure(fn: Callable[[], object], number: int = 1, repeat: int = 3) -> float:
+    """Время одного запуска fn в секундах.
+
+    Делается repeat замеров, в каждом fn запускается number раз подряд.
+    Берётся лучший замер (меньше всего помех от системы) и делится на number.
+
+    Args:
+        fn: Функция без аргументов, обычно lambda с вызовом алгоритма.
+        number: Сколько раз запускать fn в одном замере. По умолчанию 1.
+        repeat: Сколько замеров сделать. По умолчанию 3.
+
+    Returns:
+        Время одного запуска fn в секундах.
+    """
     return min(timeit.repeat(fn, number=number, repeat=repeat)) / number
 
 
-def bench_sorts(n: int) -> list[tuple]:
+def bench_sorts(n: int) -> list[Row]:
+    """Замер sorted, merge_sort и трёх квадратичных сортировок на одних данных.
+
+    Квадратичные сортировки при n > QUADRATIC_LIMIT не запускаются:
+    это около 10¹⁰ шагов, вместо времени в таблицу пишется "> 60".
+
+    Args:
+        n: Размер случайного списка.
+
+    Returns:
+        Строки таблицы вида ("sort", n, имя функции, секунды).
+    """
     data = [random.randint(-10_000, 10_000) for _ in range(n)]  # одни данные на всех
     rows = []
 
@@ -38,8 +61,18 @@ def bench_sorts(n: int) -> list[tuple]:
     return rows
 
 
-def bench_counting(n: int = 1_000_000) -> list[tuple]:
-    """★ Целые в узком диапазоне: counting_sort обгоняет sorted."""
+def bench_counting(n: int = 1_000_000) -> list[Row]:
+    """★ Целые в узком диапазоне: counting_sort обгоняет sorted.
+
+    Значения от 0 до 100, поэтому k = 101 намного меньше n,
+    и O(n + k) выигрывает у O(n log n).
+
+    Args:
+        n: Размер случайного списка. По умолчанию 1 000 000.
+
+    Returns:
+        Две строки таблицы: ("count", n, "sorted" / "counting_sort", секунды).
+    """
     lo, hi = 0, 100
     data = [random.randint(lo, hi) for _ in range(n)]
     return [
@@ -48,17 +81,31 @@ def bench_counting(n: int = 1_000_000) -> list[tuple]:
     ]
 
 
-def bench_search(n: int = 100_000, q: int = 10_000) -> list[tuple]:
+def bench_search(n: int = 100_000, q: int = 10_000) -> list[Row]:
+    """Линейный поиск против бинарного: q запросов к списку из n чисел.
+
+    Время сортировки для бинарного поиска замеряется отдельной строкой
+    и добавляется в строку "sort + binary": это его честная полная цена.
+
+    Args:
+        n: Размер списка. По умолчанию 100 000.
+        q: Количество поисковых запросов. По умолчанию 10 000.
+
+    Returns:
+        Четыре строки таблицы: linear, sort_only, binary и sort + binary.
+    """
     # диапазон в 10 раз шире n: большинство запросов НЕ найдётся → худший случай для linear
     data = [random.randint(0, 10 * n) for _ in range(n)]
     queries = [random.randint(0, 10 * n) for _ in range(q)]
     sorted_data = sorted(data)
 
-    def linear_runner():
+    def linear_runner() -> None:
+        """Все q запросов линейным поиском по data."""
         for x in queries:
             linear_search(data, x)
 
-    def binary_runner():
+    def binary_runner() -> None:
+        """Все q запросов бинарным поиском по sorted_data."""
         for x in queries:
             binary_search(sorted_data, x)
 
@@ -73,7 +120,18 @@ def bench_search(n: int = 100_000, q: int = 10_000) -> list[tuple]:
     ]
 
 
-def bench_two_sum(n: int) -> list[tuple]:
+def bench_two_sum(n: int) -> list[Row]:
+    """two_sum_brute против two_sum_fast в худшем случае.
+
+    Подходящая пара — только два последних элемента, поэтому
+    перебор проверяет все пары, а словарь проходит весь список.
+
+    Args:
+        n: Размер списка (n ≥ 2).
+
+    Returns:
+        Две строки таблицы: ("two_sum", n, имя функции, секунды).
+    """
     # все числа в 0..10⁶, а в конце два огромных: target даёт ТОЛЬКО последняя пара
     # → перебор проверяет все пары, это худший случай O(n²)
     data = random.sample(range(0, 10**6), n - 2) + [10**7, 10**7 + 1]
@@ -84,7 +142,16 @@ def bench_two_sum(n: int) -> list[tuple]:
     ]
 
 
-def print_table(rows: list[tuple]) -> None:
+def print_table(rows: list[Row]) -> None:
+    """Печать результатов таблицей с выравниванием по столбцам.
+
+    Args:
+        rows: Строки (task, n, impl, seconds). Если seconds не float
+            (например "> 60"), печатается как есть.
+
+    Returns:
+        None
+    """
     print(f"{'task':<8} | {'n':>8} | {'impl':<15} | {'seconds':>10}")
     print("-" * 52)
     for task, n, impl, sec in rows:
@@ -96,17 +163,17 @@ if __name__ == "__main__":
     random.seed(42)
     all_rows = []
 
-    print("Бенчмаркаю сортировки...")
+    print("Бенчмарк сортировки")
     for n in (1_000, 10_000, 100_000):
         all_rows += bench_sorts(n)
 
-    print("Бенчмаркаю Counting Sort...")
+    print("Бенчмарк Counting Sort")
     all_rows += bench_counting()
 
-    print("Бенчмаркаю поиски...")
+    print("Бенчмарк поисков")
     all_rows += bench_search()
 
-    print("Бенчмаркаю Two Sum...")
+    print("Бенчмарк Two Sum")
     for n in (1_000, 10_000):
         all_rows += bench_two_sum(n)
 
