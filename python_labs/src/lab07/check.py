@@ -1,27 +1,37 @@
+"""ЛР7. Проверка своих алгоритмов против эталона на случайных данных.
+
+Запуск из корня репозитория: python -m src.lab07.check
+"""
 import random
+from collections.abc import Callable
+
 from src.lab07.sorting import bubble_sort, insertion_sort, selection_sort, merge_sort, counting_sort
 from src.lab07.search import linear_search, binary_search, two_sum_brute, two_sum_fast
 
 
-def check_sorting(fn, trials: int = 100) -> None:
-    '''Тестирование сортировок
+def check_sorting(fn: Callable[[list[int]], list[int]], trials: int = 100) -> None:
+    """Проверка сортировки против sorted на случайных списках.
+
+    Списки длиной от 0 до 50, значения от -100 до 100, с повторами.
+    Проверяется, что результат совпадает с sorted и что исходный
+    список не изменился.
 
     Args:
-        fn: Функция сортировки
-        trials: Количество проверок. Defaults: 10
+        fn: Функция сортировки: принимает список, возвращает новый отсортированный.
+        trials: Количество случайных списков. По умолчанию 100.
 
     Returns:
         None
 
     Raises:
         AssertionError: '{fn.__name__} ошибся на {data}: {result}'
-            Неправильная сортировка на примере data
-        AssertionError: "{fn.__name__} изменила исходный список"
-            Был изменен изначальный список    
+            Результат не совпал с sorted(data).
+        AssertionError: '{fn.__name__} изменила исходный список'
+            Функция изменила переданный список.
 
     Prints:
-        {Название сортировки} OK: {trials} проверок    
-    '''
+        {fn.__name__} OK: {trials}
+    """
 
     for _ in range(trials):
         n = random.randint(0, 50)
@@ -36,23 +46,32 @@ def check_sorting(fn, trials: int = 100) -> None:
 
 
 def check_search(trials: int = 100) -> None:
-    '''Тестирование алгоритмов поиска
+    """Проверка linear_search и binary_search против list.index.
+
+    На каждом прогоне берётся случайный список и случайное число.
+    Если число есть в списке (list.index не бросил ValueError), оба поиска
+    должны его найти; дополнительно проверяются первый и последний
+    элементы и заведомо отсутствующее значение. Если числа нет, оба
+    поиска должны вернуть -1. binary_search проверяется на sorted(data).
 
     Args:
-        trials: Количество проверок. Defaults: 100
+        trials: Количество проверок. По умолчанию 100.
 
     Returns:
         None
 
     Raises:
         AssertionError: 'linear_search не нашел...' / 'binary_search не нашел...'
-            Поиск вернул неверный индекс или не нашел существующий элемент
-        AssertionError: '... нашел несуществующий элемент'
-            Функция поиска нашла элемент, которого изначально не было в списке
+            Поиск вернул неверный индекс или не нашёл существующий элемент.
+        AssertionError: '... нашел несуществующий элемент' / '... нашел элемент, которого нет'
+            Поиск нашёл элемент, которого нет в списке.
 
     Prints:
-        OK: {trials} проверок    
-    '''
+        OK: {trials} проверок
+
+    Complexity:
+        O(trials · m log m), m ≤ 50: в каждом прогоне sorted и линейные поиски.
+    """
     for _ in range(trials):
         n = random.randint(0, 50)
         data = [random.randint(-100, 100) for _ in range(n)]
@@ -93,23 +112,29 @@ def check_search(trials: int = 100) -> None:
 
 
 def check_two_sum(trials: int = 100) -> None:
-    '''Тестирование алгоритмов поиска суммы двух элементов (two_sum)
+    """Проверка two_sum_brute и two_sum_fast друг против друга.
+
+    На случайных списках без повторов оба способа должны либо
+    оба вернуть None, либо оба вернуть пару индексов с нужной суммой.
 
     Args:
-        trials: Количество проверок. Defaults: 100
+        trials: Количество проверок. По умолчанию 100.
 
     Returns:
         None
 
     Raises:
         AssertionError: 'brute_find не нашел, а fast_find нашел...' (или наоборот)
-            Результаты алгоритмов разошлись: один нашел решение, а другой — нет
+            Результаты разошлись: один способ нашёл пару, а другой нет.
         AssertionError: '... вернул неверную сумму!'
-            Сумма значений по найденным индексам не совпадает с искомым числом
+            Сумма элементов по найденным индексам не равна искомому числу.
 
     Prints:
-        OK: {trials} проверок    
-    '''
+        OK: {trials} проверок
+
+    Complexity:
+        O(trials · m²), m ≤ 50: из-за two_sum_brute.
+    """
     for _ in range(trials):
         n = random.randint(0, 50)
         data = list(set([random.randint(-100, 100) for _ in range(n)]))
@@ -135,23 +160,28 @@ def check_two_sum(trials: int = 100) -> None:
 
 
 def check_counting_sort(trials: int = 100) -> None:
-    '''Тестирование сортировки подсчетом ★ 
+    """★ Проверка counting_sort против sorted.
+
+    Списки длиной от 0 до 50, значения в диапазоне [-50, 50].
 
     Args:
-        trials: Количество проверок. Defaults: 10
+        trials: Количество проверок. По умолчанию 100.
 
     Returns:
         None
 
     Raises:
         AssertionError: 'counting_sort ошибся на {data}: {result}'
-            Неправильная сортировка на примере data
-        AssertionError: "counting_sort изменила исходный список"
-            Был изменен изначальный список    
+            Результат не совпал с sorted(data).
+        AssertionError: 'counting_sort изменила исходный список'
+            Функция изменила переданный список.
 
     Prints:
-        counting_sort OK: {trials} проверок    
-    '''
+        counting_sort OK: {trials}
+
+    Complexity:
+        O(trials · (m log m + k)), m ≤ 50, k = 101 (размер диапазона).
+    """
     for _ in range(trials):
         n = random.randint(0, 50)
         lo, hi = -50, 50
@@ -169,29 +199,29 @@ def check_counting_sort(trials: int = 100) -> None:
 
 if __name__ == "__main__":
     print()
-    print("Проверка сортировок...")
+    print("Проверка сортировок")
     print()
     check_sorting(bubble_sort)
     check_sorting(insertion_sort)
     check_sorting(selection_sort)
     check_sorting(merge_sort)
     check_counting_sort()
-    print("Сортировки в порядке >.<")
+    print("Сортировки в порядке")
     print()
 
     print("-------------------------")
-    print("Проверка поиска...")
+    print("Проверка поиска")
     print()
     check_search()
-    print("Поиск в порядке >.<")
+    print("Поиск в порядке")
     print()
 
     print("-------------------------")
-    print("Проверка поиска суммы...")
+    print("Проверка поиска суммы")
     print()
     check_two_sum()
-    print("Поиск суммы в порядке >.<")
+    print("Поиск суммы в порядке")
     print()
     print("-------------------------")
 
-    print("ВСЕ ПРОВЕРКИ ПРОЙДЕНЫ!")
+    print("ВСЕ ПРОВЕРКИ ПРОЙДЕНЫ")
