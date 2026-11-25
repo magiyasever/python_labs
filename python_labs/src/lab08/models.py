@@ -3,28 +3,48 @@ from datetime import date
 STUDENT_FIELDS = ("fio", "birthdate", "group", "gpa")
 
 
-def make_student(fio: str, birthdate: str, group: str, gpa: int | float) -> dict:
-    """Создать запись студента, проверив каждое поле.
+def validate_student(rec: dict | str) -> None:
+    """Проверить запись. Все правила проверки живут здесь, в одном месте.
+
+    Принимает запись-словарь или запись одной строкой
+    'ФИО, ГГГГ-ММ-ДД, группа, gpa'. Ничего не возвращает:
+    если всё хорошо — молча завершается, если нет — бросает ValueError.
 
     Args:
-        fio: ФИО, непустая строка (пробелы по краям убираются).
-        birthdate: дата рождения строкой ГГГГ-ММ-ДД, существующая и не в будущем.
-        group: группа, непустая строка (пробелы по краям убираются).
-        gpa: средний балл, int или float (не bool), от 0 до 5.
-
-    Returns:
-        Новый словарь с ключами STUDENT_FIELDS; gpa приведён к float.
+        rec: словарь с ключами STUDENT_FIELDS или строка из 4 значений через запятую.
 
     Raises:
-        ValueError: если какое-либо поле неверно (в сообщении — поле и значение).
-
-    >>> make_student("Иванов Иван", "2007-05-14", "БИВТ-26-6-1", 4)["gpa"]
-    4.0
+        ValueError: если rec не словарь и не строка, у строки не 4 значения
+            или gpa в ней не число, ключи словаря не совпадают с STUDENT_FIELDS,
+            или какое-либо значение неверно (в сообщении — поле и значение).
     """
+    # запись одной строкой: проверяем формат строки, потом поля как у словаря
+    if type(rec) is str:
+        parts = [p.strip() for p in rec.split(",")]
+        if len(parts) != 4:
+            raise ValueError(
+                f"ожидалось 4 значения через запятую "
+                f"(ФИО, дата, группа, gpa), получено {len(parts)}: {rec!r}")
+        fio, birthdate, group, gpa_text = parts
+        try:
+            gpa = float(gpa_text)
+        except ValueError:
+            raise ValueError(f"gpa: ожидалось число, получено {gpa_text!r}") from None
+        validate_student({"fio": fio, "birthdate": birthdate, "group": group, "gpa": gpa})
+        return
+
+    if type(rec) is not dict:
+        raise ValueError(f"rec: ожидался словарь или строка, получено {rec!r}")
+    if set(rec) != set(STUDENT_FIELDS):
+        raise ValueError(f"rec: ожидались ключи {STUDENT_FIELDS}, получены {tuple(rec)!r}")
+
+    fio, birthdate, group, gpa = rec["fio"], rec["birthdate"], rec["group"], rec["gpa"]
+
     if type(fio) is not str or not fio.strip():
         raise ValueError(f"fio: ожидалась непустая строка, получено {fio!r}")
     if type(group) is not str or not group.strip():
         raise ValueError(f"group: ожидалась непустая строка, получено {group!r}")
+
     if (type(birthdate) is not str or len(birthdate) != 10
             or birthdate[4] != "-" or birthdate[7] != "-"):
         raise ValueError(f"birthdate: ожидался формат ГГГГ-ММ-ДД, получено {birthdate!r}")
@@ -34,29 +54,43 @@ def make_student(fio: str, birthdate: str, group: str, gpa: int | float) -> dict
         raise ValueError(f"birthdate: неверная дата {birthdate!r}") from None
     if born > date.today():
         raise ValueError(f"birthdate: дата в будущем {birthdate!r}")
+
     if type(gpa) not in (int, float):
         raise ValueError(f"gpa: ожидалось число, получено {gpa!r}")
     if not (0 <= gpa <= 5):
         raise ValueError(f"gpa: ожидалось 0..5, получено {gpa!r}")
-    return {"fio": fio.strip(), "birthdate": birthdate,
-            "group": group.strip(), "gpa": float(gpa)}
 
 
-def validate_student(rec: dict) -> None:
-    """Проверить готовую запись: набор ключей и все значения.
+def make_student(fio: str, birthdate: str | None = None, group: str | None = None,
+                 gpa: int | float | None = None) -> dict:
+    """Создать запись студента: проверить через validate_student и собрать словарь.
+
+    Можно вызвать двумя способами:
+        make_student("Иванов Иван", "2007-05-14", "БИВТ-26-6-1", 4)
+        make_student("Иванов Иван, 2007-05-14, БИВТ-26-6-1, 4")   # одной строкой
 
     Args:
-        rec: словарь, который должен быть записью Student.
+        fio: ФИО — или вся запись строкой 'ФИО, ГГГГ-ММ-ДД, группа, gpa',
+            если остальные аргументы не переданы.
+        birthdate: дата рождения строкой ГГГГ-ММ-ДД.
+        group: группа.
+        gpa: средний балл, int или float.
+
+    Returns:
+        Новый словарь с ключами STUDENT_FIELDS; пробелы по краям fio и group
+        убраны, gpa приведён к float.
 
     Raises:
-        ValueError: если rec не словарь, ключи не совпадают с STUDENT_FIELDS
-            (есть лишние или не хватает) или какое-либо значение неверно.
+        ValueError: из validate_student, если данные неверны.
     """
-    if type(rec) is not dict:
-        raise ValueError(f"rec: ожидался словарь, получено {rec!r}")
-    if set(rec) != set(STUDENT_FIELDS):
-        raise ValueError(f"rec: ожидались ключи {STUDENT_FIELDS}, получены {tuple(rec)!r}")
-    make_student(rec["fio"], rec["birthdate"], rec["group"], rec["gpa"])
+    if birthdate is None and group is None and gpa is None and type(fio) is str:
+        # вся запись пришла одной строкой: проверить, затем разложить по полям
+        validate_student(fio)
+        fio, birthdate, group, gpa = [p.strip() for p in fio.split(",")]
+    else:
+        validate_student({"fio": fio, "birthdate": birthdate, "group": group, "gpa": gpa})
+    return {"fio": fio.strip(), "birthdate": birthdate,
+            "group": group.strip(), "gpa": float(gpa)}
 
 
 def student_age(rec: dict, today: date | None = None) -> int:
