@@ -147,23 +147,28 @@ echo $?
 
 Добавление записи и вывод списка без сортировки.
 
-![Добавление и список](../../images/lab09/add_list.png)
+<img width="427" height="84" alt="add_list" src="https://github.com/user-attachments/assets/1cd0533a-997f-4c63-8a1d-067f9bc73da0" />
+
 
 Поиск по части ФИО и изменение GPA.
 
-![Поиск и изменение](../../images/lab09/find_update.png)
+<img width="714" height="67" alt="find_update" src="https://github.com/user-attachments/assets/68ceecb4-7336-42fc-aca2-c4d7ea9bcce6" />
+
 
 Список с сортировкой по GPA и удаление записи.
 
-![Сортировка и удаление](../../images/lab09/sort_remove.png)
+<img width="818" height="93" alt="sort_remove" src="https://github.com/user-attachments/assets/29b48d4e-2c52-48c8-a125-3e3db476c537" />
+
 
 Ошибка при попытке добавить запись с неверным GPA.
 
-![Неверный GPA](../../images/lab09/invalid_gpa.png)
+<img width="1159" height="49" alt="invalid_gpa" src="https://github.com/user-attachments/assets/9a46f391-a684-45c3-a010-dc7a0cff55ee" />
+
 
 Вывод статистики и отказ при добавлении повторяющегося ФИО.
 
-![Статистика и повтор ФИО](../../images/lab09/stats_duplicate.png)
+<img width="1146" height="194" alt="stats_duplicate" src="https://github.com/user-attachments/assets/3e351795-32ed-4010-a911-88388da942ef" />
+
 
 ## Теория
 
